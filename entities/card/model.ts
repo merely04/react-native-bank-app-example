@@ -1,12 +1,12 @@
 export const CardType = {
-	Debit: 'debit',
-	Virtual: 'virtual'
+  Debit: 'debit',
+  Virtual: 'virtual',
 } as const;
 
-export type CardType = typeof CardType[keyof typeof CardType];
+export type CardType = (typeof CardType)[keyof typeof CardType];
 
 export interface Card {
-	type: CardType;
-	balance: number;
-	number: string;
+  type: CardType;
+  balance: number;
+  number: string;
 }

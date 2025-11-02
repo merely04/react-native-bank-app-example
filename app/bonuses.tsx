@@ -1,10 +1,10 @@
 import { Text } from '@/shared/ui';
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View } from 'react-native';
 
 export default function BonusesScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bonuses</Text>			
+      <Text style={styles.title}>Bonuses</Text>
     </View>
   );
 }

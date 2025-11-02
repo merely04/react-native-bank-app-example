@@ -1,30 +1,35 @@
-import { NotificationType } from "@/entities/notification";
-import { ScrollView } from "react-native";
-import { allItems, paymentsItems, systemItems, travelItems } from "./model";
-import { NotificationSection } from "./ui/NotificationSection";
+import { NotificationType } from '@/entities/notification';
+import { ScrollView } from 'react-native';
+import { mockNotifications } from '@/shared/mocks';
+import { NotificationSection } from './ui/NotificationSection';
 
 interface NotificationsScreenContentProps {
-	filter: NotificationType | null;
+  filter: NotificationType | null;
 }
 
-export const NotificationsScreenContent = (props: NotificationsScreenContentProps) => {
-	const {filter} = props;
+export const NotificationsScreenContent = (
+  props: NotificationsScreenContentProps
+) => {
+  const { filter } = props;
 
-	const items = filter ? {
-		payments: paymentsItems,
-		travel: travelItems,
-		system: systemItems,
-		delivery: [],
-	}[filter] : allItems;
+  const filteredNotifications = filter
+    ? mockNotifications
+        .map((day) => ({
+          date: day.date,
+          notifications: day.notifications.filter((n) => n.type === filter),
+        }))
+        .filter((day) => day.notifications.length > 0)
+    : mockNotifications;
 
-	return (
-		<ScrollView showsVerticalScrollIndicator={false}>
-			{items.map((item) =>
-				<NotificationSection
-					key={item.date.getTime()}
-					date={item.date}
-					notifications={item.notifications} />
-			)}
-		</ScrollView>
-	)
-}
+  return (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {filteredNotifications.map((item) => (
+        <NotificationSection
+          key={item.date.getTime()}
+          date={item.date}
+          notifications={item.notifications}
+        />
+      ))}
+    </ScrollView>
+  );
+};

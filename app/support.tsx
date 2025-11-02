@@ -1,5 +1,5 @@
 import { Text } from '@/shared/ui';
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View } from 'react-native';
 
 export default function SupportScreen() {
   return (

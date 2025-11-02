@@ -4,7 +4,13 @@ import { DarkTheme, DefaultTheme } from '@/shared/constants/themes';
 import { useClientOnlyValue } from '@/shared/hooks/useClientOnlyValue';
 import { useColorScheme } from '@/shared/hooks/useColorScheme';
 import BackIcon from '@/shared/ui/icon/assets/arrow2.svg';
-import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, useFonts } from '@expo-google-fonts/inter';
+import {
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  useFonts,
+} from '@expo-google-fonts/inter';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { ThemeProvider } from '@react-navigation/native';
 import { Stack, useRouter, useSegments } from 'expo-router';
@@ -15,7 +21,7 @@ import 'react-native-reanimated';
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary
+  ErrorBoundary,
 } from 'expo-router';
 
 export const unstable_settings = {
@@ -29,10 +35,10 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     // SpaceMono: require('../shared/assets/fonts/SpaceMono-Regular.ttf'),
-    Inter_400Regular, 
-    Inter_500Medium, 
-    Inter_600SemiBold, 
-    Inter_700Bold, 
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -54,7 +60,7 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme =  useColorScheme();
+  const colorScheme = useColorScheme();
 
   const router = useRouter();
 
@@ -63,36 +69,41 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{
-        headerShown: useClientOnlyValue(false, true),
-        headerShadowVisible: false,
-        headerStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].background,
-        },
-        headerBackButtonDisplayMode: 'minimal',
-        headerLeft: (props) => {
-          if (isModal || !props.canGoBack){
-            return null;
-          }
+      <Stack
+        screenOptions={{
+          headerShown: useClientOnlyValue(false, true),
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: Colors[colorScheme ?? 'light'].background,
+          },
+          headerBackButtonDisplayMode: 'minimal',
+          headerLeft: (props) => {
+            if (isModal || !props.canGoBack) {
+              return null;
+            }
 
-          return <HeaderBackButton
-            {...props}
-            displayMode='minimal'
-            style={styles.backButton}
-            backImage={() => <BackIcon color={props.tintColor} />}
-            onPress={router.back}
-          />
-        },
-        headerTintColor: Colors[colorScheme ?? 'light'].foreground,
-        headerTitleStyle: styles.headerTitle,
-      }}>
+            return (
+              <HeaderBackButton
+                {...props}
+                displayMode="minimal"
+                style={styles.backButton}
+                backImage={() => <BackIcon color={props.tintColor} />}
+                onPress={router.back}
+              />
+            );
+          },
+          headerTintColor: Colors[colorScheme ?? 'light'].foreground,
+          headerTitleStyle: styles.headerTitle,
+        }}
+      >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen 
+        <Stack.Screen
           name="notifications"
           options={{
             headerTitle: 'Notifications',
             headerRight: ChatMarkButton,
-          }} />
+          }}
+        />
         <Stack.Screen name="profile" />
         <Stack.Screen name="travel" />
         <Stack.Screen name="delivery" />

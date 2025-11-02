@@ -9,22 +9,29 @@ import QrIcon from '@/shared/ui/icon/assets/qr.svg';
 import UserIcon from '@/shared/ui/icon/assets/user.svg';
 import { Link, Tabs } from 'expo-router';
 import { ElementType } from 'react';
-import { Pressable, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { Colors } from '@/shared/constants';
 import { useClientOnlyValue } from '@/shared/hooks/useClientOnlyValue';
 import { useColorScheme } from '@/shared/hooks/useColorScheme';
 
 interface TabBarIconProps {
-  icon: ElementType,
+  icon: ElementType;
   color: string;
 }
 
 const TabBarIcon = (props: TabBarIconProps) => {
-  const {icon: Icon, color} = props;
+  const { icon: Icon, color } = props;
 
   return <Icon width={20} height={20} color={color} />;
-}
+};
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -49,28 +56,38 @@ export default function TabLayout() {
           shadowOpacity: 0,
         },
         animation: 'fade',
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon icon={HomeIcon} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon icon={HomeIcon} color={color} />
+          ),
           headerLeft: () => (
             <Link href="/notifications" asChild={true}>
-               <Pressable style={styles.profileButton}>
-                  <View style={[ {
-                    backgroundColor: Colors[colorScheme ?? 'light'].container,
-                  }, styles.avatarContainer]}>
-                    <UserIcon color={Colors[colorScheme ?? 'light'].foreground}/>
-                  </View>
+              <Pressable style={styles.profileButton}>
+                <View
+                  style={[
+                    {
+                      backgroundColor: Colors[colorScheme ?? 'light'].container,
+                    },
+                    styles.avatarContainer,
+                  ]}
+                >
+                  <UserIcon color={Colors[colorScheme ?? 'light'].foreground} />
+                </View>
 
-                  <View style={{ marginLeft: 12 }}>
-                    <Text style={styles.profileName}>Charlotte</Text>
-                  </View>
+                <View style={{ marginLeft: 12 }}>
+                  <Text style={styles.profileName}>Charlotte</Text>
+                </View>
 
-                  <View style={{ marginLeft: 8, marginTop: 4 }}>
-                    <ArrowIcon color={Colors[colorScheme ?? 'light'].foreground} />
-                  </View>
+                <View style={{ marginLeft: 8, marginTop: 4 }}>
+                  <ArrowIcon
+                    color={Colors[colorScheme ?? 'light'].foreground}
+                  />
+                </View>
               </Pressable>
             </Link>
           ),
@@ -93,28 +110,36 @@ export default function TabLayout() {
         name="payments"
         options={{
           title: 'Payments',
-          tabBarIcon: ({ color }) => <TabBarIcon icon={PaymentsIcon} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon icon={PaymentsIcon} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
           title: 'History',
-          tabBarIcon: ({ color }) => <TabBarIcon icon={HistoryIcon} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon icon={HistoryIcon} color={color} />
+          ),
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="analytics"
         options={{
           title: 'Analytics',
-          tabBarIcon: ({ color }) => <TabBarIcon icon={AnalyticsIcon} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon icon={AnalyticsIcon} color={color} />
+          ),
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="chats"
         options={{
           title: 'Chats',
-          tabBarIcon: ({ color }) => <TabBarIcon icon={ChatsIcon} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon icon={ChatsIcon} color={color} />
+          ),
         }}
       />
     </Tabs>
@@ -138,7 +163,7 @@ const styles = StyleSheet.create({
   profileName: {
     fontSize: 16,
     fontWeight: 'medium',
-  }  satisfies StyleProp<TextStyle>,
+  } satisfies StyleProp<TextStyle>,
   qrButton: {
     width: 40,
     height: 40,
@@ -149,4 +174,4 @@ const styles = StyleSheet.create({
   tabBarLabel: {
     fontSize: 12,
   } satisfies StyleProp<TextStyle>,
-})
+});
