@@ -1,4 +1,5 @@
 import { Colors } from '@/shared/constants';
+import { memo, useMemo } from 'react';
 import {
   Text as NativeText,
   TextProps as NativeTextProps,
@@ -7,30 +8,32 @@ import {
 
 type TextProps = NativeTextProps;
 
-export const Text = (props: TextProps) => {
+export const Text = memo<TextProps>((props) => {
   const { style, ...otherProps } = props;
 
   const colorScheme = useColorScheme();
 
-  const fontWeight = getLastFontWeight(style) ?? 'regular';
+  const memoizedValues = useMemo(() => {
+    const fontWeight = getLastFontWeight(style) ?? 'regular';
 
-  const fontFamily = {
-    regular: 'Inter_400Regular',
-    medium: 'Inter_500Medium',
-    semibold: 'Inter_600SemiBold',
-    bold: 'Inter_700Bold',
-  }[fontWeight];
+    const fontFamily = {
+      regular: 'Inter_400Regular',
+      medium: 'Inter_500Medium',
+      semibold: 'Inter_600SemiBold',
+      bold: 'Inter_700Bold',
+    }[fontWeight];
 
-  return (
-    <NativeText
-      style={[
+    return {
+      fontFamily,
+      textStyle: [
         { fontFamily, color: Colors[colorScheme ?? 'light'].foreground },
         style,
-      ]}
-      {...otherProps}
-    />
-  );
-};
+      ],
+    };
+  }, [style, colorScheme]);
+
+  return <NativeText style={memoizedValues.textStyle} {...otherProps} />;
+});
 
 function getLastFontWeight(style: any): string | undefined {
   if (!style) return undefined;

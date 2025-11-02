@@ -2,9 +2,9 @@ import { Card } from '@/entities/card';
 import { formatUSD } from '@/entities/currency';
 import { Colors } from '@/shared/constants';
 import { Text } from '@/shared/ui';
-import { ElementType } from 'react';
+import { ElementType, memo } from 'react';
+import { Image } from 'expo-image';
 import {
-  Image,
   Pressable,
   StyleProp,
   StyleSheet,
@@ -20,7 +20,7 @@ interface CardItemProps {
   data: Card;
 }
 
-export const CardItem = (props: CardItemProps) => {
+export const CardItem = memo<CardItemProps>((props) => {
   const { icon: Icon, data } = props;
 
   const CardCover = data.type === 'debit' ? DebitCardCover : VirtualCardCover;
@@ -61,7 +61,7 @@ export const CardItem = (props: CardItemProps) => {
       </View>
     </Pressable>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

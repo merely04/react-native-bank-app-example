@@ -6,26 +6,47 @@ import BonusesIcon from '@/shared/ui/icon/assets/bonuses.svg';
 import DeliveryIcon from '@/shared/ui/icon/assets/delivery.svg';
 import SupportIcon from '@/shared/ui/icon/assets/support.svg';
 import TravelIcon from '@/shared/ui/icon/assets/travel.svg';
+import { memo, useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { ExpensesHeader } from './ui/ExpensesHeader';
 import { ExpensesSections } from './ui/ExpensesSections';
 import { mockCards, mockCategories, mockExpenses } from '@/shared/mocks';
 
-export const HomeScreenContent = () => {
+export const HomeScreenContent = memo(() => {
+  const memoizedCards = useMemo(
+    () =>
+      mockCards.map((card) => (
+        <CardItem key={card.number} icon={MastercardIcon} data={card} />
+      )),
+    []
+  );
+
+  const actionButtons = useMemo(
+    () => [
+      { href: '/travel' as const, icon: TravelIcon, title: 'Travel' },
+      { href: '/delivery' as const, icon: DeliveryIcon, title: 'Delivery' },
+      { href: '/bonuses' as const, icon: BonusesIcon, title: 'Bonuses' },
+      { href: '/support' as const, icon: SupportIcon, title: 'Support' },
+    ],
+    []
+  );
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={styles.actionsContainer}>
-          <ActionButton href="/travel" icon={TravelIcon} title="Travel" />
-          <ActionButton href="/delivery" icon={DeliveryIcon} title="Delivery" />
-          <ActionButton href="/bonuses" icon={BonusesIcon} title="Bonuses" />
-          <ActionButton href="/support" icon={SupportIcon} title="Support" />
+          {actionButtons.map((button) => (
+            <ActionButton
+              key={button.href}
+              href={button.href}
+              icon={button.icon}
+              title={button.title}
+            />
+          ))}
         </View>
 
         <View style={styles.cardsContainer}>
-          {mockCards.map((card, index) => (
-            <CardItem key={card.number} icon={MastercardIcon} data={card} />
-          ))}
+          {memoizedCards}
           <AddCardButton style={{ marginLeft: 'auto' }} />
         </View>
 
@@ -36,7 +57,7 @@ export const HomeScreenContent = () => {
       </View>
     </ScrollView>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

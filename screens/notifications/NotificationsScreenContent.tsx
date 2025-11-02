@@ -1,6 +1,6 @@
 import { NotificationType } from '@/entities/notification';
-import { ScrollView } from 'react-native';
-import { mockNotifications } from '@/shared/mocks';
+import { DayNotifications, mockNotifications } from '@/shared/mocks';
+import { FlatList } from 'react-native';
 import { NotificationSection } from './ui/NotificationSection';
 
 interface NotificationsScreenContentProps {
@@ -21,15 +21,19 @@ export const NotificationsScreenContent = (
         .filter((day) => day.notifications.length > 0)
     : mockNotifications;
 
+  const renderNotificationSection = ({ item }: { item: DayNotifications }) => (
+    <NotificationSection date={item.date} notifications={item.notifications} />
+  );
+
+  const keyExtractor = (item: DayNotifications) =>
+    item.date.getTime().toString();
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {filteredNotifications.map((item) => (
-        <NotificationSection
-          key={item.date.getTime()}
-          date={item.date}
-          notifications={item.notifications}
-        />
-      ))}
-    </ScrollView>
+    <FlatList
+      data={filteredNotifications}
+      renderItem={renderNotificationSection}
+      keyExtractor={keyExtractor}
+      showsVerticalScrollIndicator={false}
+    />
   );
 };

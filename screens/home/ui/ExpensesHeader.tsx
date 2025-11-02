@@ -3,7 +3,7 @@ import { convertExpenseTypeToColor, ExpenseType } from '@/entities/expense';
 import { Colors } from '@/shared/constants';
 import { useColorScheme } from '@/shared/hooks/useColorScheme';
 import { Text } from '@/shared/ui';
-import { useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import {
   LayoutChangeEvent,
   StyleProp,
@@ -24,26 +24,32 @@ interface ExpensesProps {
 
 const GAP = 2;
 
-export const ExpensesHeader = (props: ExpensesProps) => {
+export const ExpensesHeader = memo<ExpensesProps>((props) => {
   const { categories, style } = props;
 
   const colorSheme = useColorScheme();
 
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
 
-  const date = new Date();
+  const date = useMemo(() => new Date(), []);
 
-  const totalAmount = categories.reduce((sum, c) => sum + c.amount, 0);
+  const memoizedValues = useMemo(() => {
+    const totalAmount = categories.reduce((sum, c) => sum + c.amount, 0);
+    const gapCount = Math.max(0, categories.length - 1);
+    const totalGapWidth = GAP * gapCount;
+    const availableWidth = containerWidth ? containerWidth - totalGapWidth : 0;
 
-  const gapCount = Math.max(0, categories.length - 1);
-  const totalGapWidth = GAP * gapCount;
+    const categoriesWithPercent = categories.map((c) => ({
+      ...c,
+      percent: totalAmount === 0 ? 0 : (c.amount / totalAmount) * 100,
+    }));
 
-  const availableWidth = containerWidth ? containerWidth - totalGapWidth : 0;
-
-  const categoriesWithPercent = categories.map((c) => ({
-    ...c,
-    percent: totalAmount === 0 ? 0 : (c.amount / totalAmount) * 100,
-  }));
+    return {
+      totalAmount,
+      availableWidth,
+      categoriesWithPercent,
+    };
+  }, [categories, containerWidth]);
 
   const handleLayout = (event: LayoutChangeEvent) => {
     const { width } = event.nativeEvent.layout;
@@ -60,19 +66,22 @@ export const ExpensesHeader = (props: ExpensesProps) => {
           </Text>
         </Text>
 
-        <Text style={styles.totalAmount}>{formatUSD(totalAmount)}</Text>
+        <Text style={styles.totalAmount}>
+          {formatUSD(memoizedValues.totalAmount)}
+        </Text>
       </View>
 
       <View style={styles.categoriesContainer} onLayout={handleLayout}>
-        {categoriesWithPercent.map((c) => {
+        {memoizedValues.categoriesWithPercent.map((c) => {
           const width =
-            availableWidth > 0 && totalAmount > 0
-              ? (c.amount / totalAmount) * availableWidth
+            memoizedValues.availableWidth > 0 && memoizedValues.totalAmount > 0
+              ? (c.amount / memoizedValues.totalAmount) *
+                memoizedValues.availableWidth
               : 0;
 
           const finalWidth = Math.max(
             width,
-            totalAmount > 0 && width > 0 ? 1 : 0
+            memoizedValues.totalAmount > 0 && width > 0 ? 1 : 0
           );
 
           return (
@@ -91,7 +100,7 @@ export const ExpensesHeader = (props: ExpensesProps) => {
       </View>
     </View>
   );
-};
+});
 
 function formatMonth(date: Date) {
   return new Intl.DateTimeFormat('en-US', {

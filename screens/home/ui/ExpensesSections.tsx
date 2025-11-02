@@ -7,7 +7,8 @@ import {
 import { Colors } from '@/shared/constants';
 import { useColorScheme } from '@/shared/hooks/useColorScheme';
 import { Text } from '@/shared/ui';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image } from 'expo-image';
+import { StyleSheet, View } from 'react-native';
 
 interface DayExpenses {
   date: Date;

@@ -2,7 +2,7 @@ import { Notification, NotificationType } from '@/entities/notification';
 import { mockCards } from './cards';
 import { mockRecipients } from './recipients';
 
-interface DayNotifications {
+export interface DayNotifications {
   date: Date;
   notifications: Notification[];
 }

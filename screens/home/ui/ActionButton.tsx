@@ -2,7 +2,7 @@ import { Colors } from '@/shared/constants';
 import { useColorScheme } from '@/shared/hooks/useColorScheme';
 import { Text } from '@/shared/ui';
 import { Link, LinkProps } from 'expo-router';
-import { ElementType } from 'react';
+import { ElementType, memo } from 'react';
 import {
   Pressable,
   StyleProp,
@@ -16,7 +16,7 @@ interface ActionButtonProps extends LinkProps {
   title: string;
 }
 
-export const ActionButton = (props: ActionButtonProps) => {
+export const ActionButton = memo<ActionButtonProps>((props) => {
   const { href, icon: Icon, title } = props;
 
   const themeColor = useColorScheme();
@@ -38,7 +38,7 @@ export const ActionButton = (props: ActionButtonProps) => {
       </Pressable>
     </Link>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

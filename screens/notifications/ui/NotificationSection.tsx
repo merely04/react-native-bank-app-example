@@ -8,7 +8,8 @@ import { Text } from '@/shared/ui';
 import ShieldIcon from '@/shared/ui/icon/assets/shield.svg';
 import TransferIcon from '@/shared/ui/icon/assets/transfer.svg';
 import TravelIcon from '@/shared/ui/icon/assets/travel.svg';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image } from 'expo-image';
+import { StyleSheet, View } from 'react-native';
 
 interface NotificationSectionProps {
   date: Date;
