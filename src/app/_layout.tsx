@@ -1,4 +1,8 @@
+import ArrowIcon from '@/assets/icons/arrow.svg';
 import BackIcon from '@/assets/icons/arrow2.svg';
+import QrIcon from '@/assets/icons/qr.svg';
+import UserIcon from '@/assets/icons/user.svg';
+import { Text } from '@/components';
 import { Colors } from '@/constants';
 import { DarkTheme, DefaultTheme } from '@/constants/themes';
 import { useClientOnlyValue } from '@/hooks/useClientOnlyValue';
@@ -13,10 +17,17 @@ import {
 } from '@expo-google-fonts/inter';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { ThemeProvider } from '@react-navigation/native';
-import { Stack, useRouter, useSegments } from 'expo-router';
+import { Link, Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 import 'react-native-reanimated';
 
 export {
@@ -96,7 +107,54 @@ function RootLayoutNav() {
           headerTitleStyle: styles.headerTitle,
         }}
       >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            title: '',
+            headerLeft: () => (
+              <Link href="/notifications" asChild={true}>
+                <Pressable style={styles.profileButton}>
+                  <View
+                    style={[
+                      {
+                        backgroundColor:
+                          Colors[colorScheme ?? 'light'].container,
+                      },
+                      styles.avatarContainer,
+                    ]}
+                  >
+                    <UserIcon
+                      color={Colors[colorScheme ?? 'light'].foreground}
+                    />
+                  </View>
+
+                  <View style={{ marginLeft: 12 }}>
+                    <Text style={styles.profileName}>Charlotte</Text>
+                  </View>
+
+                  <View style={{ marginLeft: 8, marginTop: 4 }}>
+                    <ArrowIcon
+                      color={Colors[colorScheme ?? 'light'].foreground}
+                    />
+                  </View>
+                </Pressable>
+              </Link>
+            ),
+            headerTitle: () => null,
+            headerRight: () => (
+              <Link href="/modal" asChild={true}>
+                <Pressable style={styles.qrButton}>
+                  {({ pressed }) => (
+                    <QrIcon
+                      color={Colors[colorScheme ?? 'light'].foreground}
+                      style={{ opacity: pressed ? 0.5 : 1 }}
+                    />
+                  )}
+                </Pressable>
+              </Link>
+            ),
+          }}
+        />
         <Stack.Screen
           name="notifications"
           options={{
@@ -116,10 +174,35 @@ function RootLayoutNav() {
 }
 
 const styles = StyleSheet.create({
+  profileButton: {
+    height: 36,
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginLeft: -10,
+    marginHorizontal: 10,
+  },
+  avatarContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 16,
+    flexDirection: 'row',
+  } satisfies StyleProp<ViewStyle>,
+  profileName: {
+    fontSize: 16,
+    fontWeight: 'medium',
+  } satisfies StyleProp<TextStyle>,
+  qrButton: {
+    width: 36,
+    height: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   backButton: {
-    width: 40, // 24 - original size, 40 - size with padding
-    height: 24,
-    marginLeft: -8, // 16 header padding, 40 (width with button padding for accessibility) - (24 / 2) half from origin size
+    width: 36,
+    height: 36,
     alignItems: 'center',
     justifyContent: 'center',
   },

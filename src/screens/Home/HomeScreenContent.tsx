@@ -3,6 +3,8 @@ import DeliveryIcon from '@/assets/icons/delivery.svg';
 import SupportIcon from '@/assets/icons/support.svg';
 import TravelIcon from '@/assets/icons/travel.svg';
 import MastercardIcon from '@/assets/images/mastercard.svg';
+import { Colors } from '@/constants';
+import { useColorScheme } from '@/hooks/useColorScheme';
 import { mockCards, mockCategories, mockExpenses } from '@/mocks';
 import { ActionButton } from '@/screens/Home/ActionButton';
 import { memo, useMemo } from 'react';
@@ -13,6 +15,8 @@ import { ExpensesHeader } from './ExpensesHeader';
 import { ExpensesSections } from './ExpensesSections';
 
 export const HomeScreenContent = memo(() => {
+  const colorScheme = useColorScheme();
+
   const memoizedCards = useMemo(
     () =>
       mockCards.map((card) => (
@@ -32,7 +36,12 @@ export const HomeScreenContent = memo(() => {
   );
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{
+        backgroundColor: Colors[colorScheme ?? 'light'].background,
+      }}
+    >
       <View style={styles.container}>
         <View style={styles.actionsContainer}>
           {actionButtons.map((button) => (

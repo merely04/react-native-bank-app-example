@@ -20,10 +20,9 @@ export const ChatMarkButton = () => {
 
 const styles = StyleSheet.create({
   chatMarkButton: {
-    width: 24,
-    height: 24,
+    width: 36,
+    height: 36,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 16,
   },
 });

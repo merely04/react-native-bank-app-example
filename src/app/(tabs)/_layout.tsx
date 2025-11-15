@@ -1,176 +1,42 @@
-import AnalyticsIcon from '@/assets/icons/analytics.svg';
-import ArrowIcon from '@/assets/icons/arrow.svg';
-import ChatsIcon from '@/assets/icons/chats.svg';
-import HistoryIcon from '@/assets/icons/history.svg';
-import HomeIcon from '@/assets/icons/home.svg';
-import PaymentsIcon from '@/assets/icons/payments.svg';
-import QrIcon from '@/assets/icons/qr.svg';
-import UserIcon from '@/assets/icons/user.svg';
-import { Text } from '@/components';
-import { Link, Tabs } from 'expo-router';
-import { ElementType } from 'react';
-import {
-  Pressable,
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { Icon, Label, NativeTabs } from 'expo-router/unstable-native-tabs';
+import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 
 import { Colors } from '@/constants';
-import { useClientOnlyValue } from '@/hooks/useClientOnlyValue';
 import { useColorScheme } from '@/hooks/useColorScheme';
-
-interface TabBarIconProps {
-  icon: ElementType;
-  color: string;
-}
-
-const TabBarIcon = (props: TabBarIconProps) => {
-  const { icon: Icon, color } = props;
-
-  return <Icon width={20} height={20} color={color} />;
-};
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <Tabs
-      screenOptions={{
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-        headerShadowVisible: false,
-        headerStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].background,
-        },
-        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].foreground,
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        tabBarLabelStyle: styles.tabBarLabel,
-        tabBarStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].tabs,
-          borderTopWidth: 0,
-          elevation: 0,
-          shadowOpacity: 0,
-        },
-        animation: 'fade',
-      }}
+    <NativeTabs
+      labelStyle={styles.tabBarLabel}
+      tintColor={Colors[colorScheme ?? 'light'].tint}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon icon={HomeIcon} color={color} />
-          ),
-          headerLeft: () => (
-            <Link href="/notifications" asChild={true}>
-              <Pressable style={styles.profileButton}>
-                <View
-                  style={[
-                    {
-                      backgroundColor: Colors[colorScheme ?? 'light'].container,
-                    },
-                    styles.avatarContainer,
-                  ]}
-                >
-                  <UserIcon color={Colors[colorScheme ?? 'light'].foreground} />
-                </View>
-
-                <View style={{ marginLeft: 12 }}>
-                  <Text style={styles.profileName}>Charlotte</Text>
-                </View>
-
-                <View style={{ marginLeft: 8, marginTop: 4 }}>
-                  <ArrowIcon
-                    color={Colors[colorScheme ?? 'light'].foreground}
-                  />
-                </View>
-              </Pressable>
-            </Link>
-          ),
-          headerTitle: () => null,
-          headerRight: () => (
-            <Link href="/modal" asChild={true}>
-              <Pressable style={styles.qrButton}>
-                {({ pressed }) => (
-                  <QrIcon
-                    color={Colors[colorScheme ?? 'light'].foreground}
-                    style={{ opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="payments"
-        options={{
-          title: 'Payments',
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon icon={PaymentsIcon} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: 'History',
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon icon={HistoryIcon} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="analytics"
-        options={{
-          title: 'Analytics',
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon icon={AnalyticsIcon} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="chats"
-        options={{
-          title: 'Chats',
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon icon={ChatsIcon} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+      <NativeTabs.Trigger name="index">
+        <Label>Home</Label>
+        <Icon sf="house.fill" drawable="ic_home" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="payments">
+        <Label>Payments</Label>
+        <Icon sf="creditcard.fill" drawable="ic_payment" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="history">
+        <Label>History</Label>
+        <Icon sf="clock.fill" drawable="ic_history" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="analytics">
+        <Label>Analytics</Label>
+        <Icon sf="chart.bar.fill" drawable="ic_bar_chart" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="chats">
+        <Label>Chats</Label>
+        <Icon sf="message.fill" drawable="ic_chat" />
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
 }
 
 const styles = StyleSheet.create({
-  profileButton: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  avatarContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 36,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 16,
-    flexDirection: 'row',
-  } satisfies StyleProp<ViewStyle>,
-  profileName: {
-    fontSize: 16,
-    fontWeight: 'medium',
-  } satisfies StyleProp<TextStyle>,
-  qrButton: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 16,
-  },
   tabBarLabel: {
     fontSize: 12,
   } satisfies StyleProp<TextStyle>,
